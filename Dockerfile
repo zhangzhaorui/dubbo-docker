@@ -20,7 +20,7 @@ RUN wget -qO- https://github.com/alibaba/dubbo/archive/dubbo-2.5.3.tar.gz | tar 
 RUN mkdir -p ~/.m2/repository/com/alibaba
 
 # Add deps
-ADD alibaba-m2-deps.zip ~/.m2/repository/com/alibaba/
+ADD alibaba-m2-deps.tar.gz ~/.m2/repository/com/alibaba/
 
 # Apply patch
 COPY patch.diff /opt/dubbo/patch.diff
