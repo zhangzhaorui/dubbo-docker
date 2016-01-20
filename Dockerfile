@@ -10,7 +10,7 @@ RUN mkdir /opt \
 ENV PATH=/opt/maven/bin:$PATH
 
 # Install patch tool
-RUN apk add --update patch && rm -rf /var/cache/apk/*
+RUN apk add --update patch openjdk8 && rm -rf /var/cache/apk/*
 
 # Download Alibaba Dubbo source code package
 RUN wget -qO- https://github.com/alibaba/dubbo/archive/dubbo-2.5.3.tar.gz | tar -xzf - -C /opt \
