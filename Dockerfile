@@ -31,4 +31,4 @@ RUN patch -p1 < patch.diff
 RUN mvn package -Dmaven.test.skip=true
 
 # Cleanup
-RUN rm -rf ~/.m2 && rm -rf /opt/opensesame
+RUN rm -rf ~/.m2
