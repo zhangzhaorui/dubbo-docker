@@ -17,10 +17,10 @@ RUN wget -qO- https://github.com/alibaba/dubbo/archive/dubbo-2.5.3.tar.gz | tar 
     && mv /opt/dubbo-dubbo-2.5.3 /opt/dubbo
 
 # Mock maven local repository folder
-RUN mkdir -p ~/.m2/repository/com/alibaba
+RUN mkdir -p /root/.m2/repository/com/alibaba
 
 # Add deps
-ADD alibaba-m2-deps.tar.gz ~/.m2/repository/com/alibaba/
+ADD alibaba-m2-deps.tar.gz /root/.m2/repository/com/alibaba/
 
 # Apply patch
 COPY patch.diff /opt/dubbo/patch.diff
@@ -31,4 +31,4 @@ RUN patch -p1 < patch.diff
 RUN mvn package -Dmaven.test.skip=true
 
 # Cleanup
-RUN rm -rf ~/.m2
+RUN rm -rf /root/.m2
