@@ -9,8 +9,14 @@ RUN mkdir /opt \
 
 ENV PATH=/opt/maven/bin:$PATH
 
-# Install patch tool
-RUN apk add --update patch && rm -rf /var/cache/apk/*
+# Install patch tool & git
+RUN apk add --update patch git && rm -rf /var/cache/apk/*
+
+# Build & Install opensesame
+WORKDIR /opt
+RUN git clone https://github.com/alibaba/opensesame.git
+WORKDIR /opt/opensesame
+RUN mvn install
 
 # Download Alibaba Dubbo source code package
 RUN wget -qO- https://github.com/alibaba/dubbo/archive/dubbo-2.5.3.tar.gz | tar -xzf - -C /opt \
@@ -22,4 +28,7 @@ WORKDIR /opt/dubbo
 RUN patch -p1 < patch.diff
 
 # Build dubbo
-RUN mvn package -Dmaven.test.skip=true && rm -rf ~/.m2
+RUN mvn package -Dmaven.test.skip=true
+
+# Cleanup
+RUN rm -rf ~/.m2 && rm -rf /opt/opensesame
