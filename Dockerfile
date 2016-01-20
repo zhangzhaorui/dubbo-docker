@@ -4,7 +4,7 @@ MAINTAINER Claude Lee "calee2005@outlook.com"
 
 # Install maven 3.3.9
 RUN mkdir /opt \
-    && wget -qO- http://apache.fayea.com/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar -xzf - -C /opt \
+    && wget -qO- http://mirror.bit.edu.cn/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar -xzf - -C /opt \
     && mv /opt/apache-maven-3.3.9 /opt/maven
 
 ENV PATH=/opt/maven/bin:$PATH
