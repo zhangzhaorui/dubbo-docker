@@ -19,7 +19,7 @@ RUN wget -qO- https://github.com/alibaba/dubbo/archive/dubbo-2.5.3.tar.gz | tar 
 # Apply patch
 COPY patch.diff /opt/dubbo/patch.diff
 WORKDIR /opt/dubbo
-RUN patch -p0 < patch.diff
+RUN patch -p1 < patch.diff
 
 # Build dubbo
 RUN mvn package -Dmaven.test.skip=true && rm -rf ~/.m2
