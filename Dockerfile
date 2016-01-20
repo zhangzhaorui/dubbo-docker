@@ -13,8 +13,7 @@ ENV PATH=/opt/maven/bin:$PATH
 RUN apk add --update patch && rm -rf /var/cache/apk/*
 
 # Download Alibaba Dubbo source code package
-RUN mkdir /opt \
-    && wget -qO- https://github.com/alibaba/dubbo/archive/dubbo-2.5.3.tar.gz | tar -xzf - -C /opt \
+RUN wget -qO- https://github.com/alibaba/dubbo/archive/dubbo-2.5.3.tar.gz | tar -xzf - -C /opt \
     && mv /opt/dubbo-dubbo-2.5.3 /opt/dubbo
 
 # Apply patch
@@ -23,5 +22,4 @@ WORKDIR /opt/dubbo
 RUN patch -s -i patch.diff
 
 # Build dubbo
-RUN mvn package -Dmaven.test.skip=true
-
+RUN mvn package -Dmaven.test.skip=true && rm -rf ~/.m2
