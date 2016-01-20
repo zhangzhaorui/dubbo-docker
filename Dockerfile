@@ -17,7 +17,7 @@ RUN wget -qO- https://github.com/alibaba/dubbo/archive/dubbo-2.5.3.tar.gz | tar 
     && mv /opt/dubbo-dubbo-2.5.3 /opt/dubbo
 
 # Apply patch
-COPY patch.diff /opt/dubbo 
+COPY patch.diff /opt/dubbo/patch.diff
 WORKDIR /opt/dubbo
 RUN patch -s -i patch.diff
 
