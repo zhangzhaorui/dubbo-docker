@@ -10,7 +10,7 @@ RUN mkdir /opt \
 ENV PATH=/opt/maven/bin:$PATH
 
 # Install patch tool
-RUN apk add patch && rm -rf /var/cache/apk/*
+RUN apk add --update patch && rm -rf /var/cache/apk/*
 
 # Download Alibaba Dubbo source code package
 RUN mkdir /opt \
