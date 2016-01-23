@@ -1,34 +1,32 @@
-# Build environment for Alibaba Dubbo RPC Framework
-FROM calee2005/alpine-java8
+# Build Alibaba Dubbo RPC Framework
+FROM alpine:3.3
 MAINTAINER Claude Lee "calee2005@outlook.com"
 
-# Install maven 3.3.9
-RUN mkdir /opt \
-    && wget -qO- http://mirror.bit.edu.cn/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar -xzf - -C /opt \
-    && mv /opt/apache-maven-3.3.9 /opt/maven
+# Install jdk and others
+RUN apk add --update bash patch openjdk8 && rm -rf /var/cache/apk/*
 
-ENV PATH=/opt/maven/bin:$PATH
+# Setup env
+ENV JAVA_HOME /usr/lib/jvm/default-jvm
 
-# Install patch tool
-RUN apk add --update patch openjdk8 && rm -rf /var/cache/apk/*
-
-# Download Alibaba Dubbo source code package
-RUN wget -qO- https://github.com/alibaba/dubbo/archive/dubbo-2.5.3.tar.gz | tar -xzf - -C /opt \
-    && mv /opt/dubbo-dubbo-2.5.3 /opt/dubbo
-
-# Mock maven local repository folder
-RUN mkdir -p /root/.m2/repository/com/alibaba
-
-# Add deps
+# Add deps & patch file
 ADD alibaba-m2-deps.tar.gz /root/.m2/repository/com/alibaba/
-
-# Apply patch
 COPY patch.diff /opt/dubbo/patch.diff
+
 WORKDIR /opt/dubbo
-RUN patch -p1 < patch.diff
 
-# Build dubbo
-RUN mvn package -Dmaven.test.skip=true
+# Install maven 3.3.9 & Download Dubbo source code
+RUN wget -qO- http://mirror.bit.edu.cn/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar -xzf - -C /opt \
+    && mv /opt/apache-maven-3.3.9 /opt/maven \
+    && wget -qO- https://github.com/alibaba/dubbo/archive/dubbo-2.5.3.tar.gz | tar -xzf - -C /opt \
+    && mv /opt/dubbo-dubbo-2.5.3/* /opt/dubbo/ \
+    && patch -p1 < patch.diff \
+    && /opt/maven/bin/mvn package -Dmaven.test.skip=true \
+    && mkdir /opt/dubbo-dist \
+    && mv /opt/dubbo/dubbo/target/dubbo-2.5.3.jar /opt/dubbo-dist/dubbo-2.5.3.jar \
+    && mv /opt/dubbo/dubbo-simple/dubbo-monitor-simple/target/dubbo-monitor-simple-2.5.3-assembly.tar.gz /opt/dubbo-dist/dubbo-monitor-simple-2.5.3-assembly.tar.gz \
+    && mv /opt/dubbo/dubbo-admin/target/dubbo-admin-2.5.3.war /opt/dubbo-dist/dubbo-admin-2.5.3.war \
+    && mv /opt/dubbo/dubbo-demo/dubbo-demo-provider/target/dubbo-demo-provider-2.5.3-assembly.tar.gz /opt/dubbo-dist/dubbo-demo-provider-2.5.3-assembly.tar.gz \
+    && rm -rf /opt/maven \
+    && rm -rf /opt/dubbo \
+    && rm -rf /root/.m2
 
-# Cleanup
-RUN rm -rf /root/.m2
