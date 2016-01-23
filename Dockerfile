@@ -15,7 +15,7 @@ COPY patch.diff /opt/dubbo/patch.diff
 WORKDIR /opt/dubbo
 
 # Install maven 3.3.9 & Download Dubbo source code
-RUN wget -qO- http://mirror.bit.edu.cn/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar -xzf - -C /opt \
+RUN wget -qO- http://www.us.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar -xzf - -C /opt \
     && mv /opt/apache-maven-3.3.9 /opt/maven \
     && wget -qO- https://github.com/alibaba/dubbo/archive/dubbo-2.5.3.tar.gz | tar -xzf - -C /opt \
     && mv /opt/dubbo-dubbo-2.5.3/* /opt/dubbo/ \
