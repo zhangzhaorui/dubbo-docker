@@ -1,5 +1,5 @@
 # Build Alibaba Dubbo RPC Framework
-FROM alpine:3.3
+FROM registry.dataos.io/library/alpine:3.3
 MAINTAINER Claude Lee "calee2005@outlook.com"
 
 # Install jdk and others
